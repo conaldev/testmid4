@@ -5,10 +5,6 @@ import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 @Entity
 public class User {
