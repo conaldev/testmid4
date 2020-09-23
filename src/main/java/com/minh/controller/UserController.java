@@ -6,6 +6,7 @@ import com.minh.model.User;
 import com.minh.service.CategoryService;
 import com.minh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -49,20 +51,17 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ModelAndView listUsers(@PageableDefault(value = 7,sort = "userName")  Pageable pageable) {
-        Iterable<User> users = userService.findAll(pageable);
+    public ModelAndView listUsers(@PageableDefault(value = 7,sort = "userName")  Pageable pageable, Optional<String> s) {
+        Page<User> users = s.isPresent() ? search(s,pageable) : getPage(pageable);
         ModelAndView modelAndView = new ModelAndView("/user/list");
         modelAndView.addObject("users", users);
+        modelAndView.addObject("keyword",s.orElse(null));
         return modelAndView;
     }
-    @PostMapping("/users")
-    public ModelAndView listUsers(@RequestParam String userName){
-        List<User> users = userService.findUsersByUserNameContaining(userName);
-        ModelAndView modelAndView = new ModelAndView("/user/list");
-        modelAndView.addObject("users",users);
-        return modelAndView;
+    private Page<User> getPage(Pageable pageable){return userService.findAll(pageable);}
+    private Page<User> search(Optional<String> s, Pageable pageable) {
+        return userService.search(s.get(),pageable);
     }
-
     @GetMapping("/edit-user/{id}")
     public ModelAndView showEditForm(@PathVariable Long id) {
         User user = userService.findById(id);

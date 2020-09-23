@@ -13,5 +13,6 @@ public interface UserService {
     void save(User user);
     void remove(Long id);
     Iterable<User> findAllByCategory(Category category);
-    List<User> findUsersByUserNameContaining(String userName);
+    Page<User> findUsersByUserNameContaining(String userName,Pageable pageable);
+    Page<User> search(String keyword,Pageable pageable);
 }

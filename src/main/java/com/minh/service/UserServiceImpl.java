@@ -39,7 +39,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> findUsersByUserNameContaining(String userName) {
-        return userRepository.findUsersByUserNameContaining(userName);
+    public Page<User> findUsersByUserNameContaining(String userName, Pageable pageable) {
+        return userRepository.findUsersByUserNameContaining(userName,pageable);
+    }
+
+    @Override
+    public Page<User> search(String keyword, Pageable pageable) {
+        return userRepository.findUsersByUserNameContaining(keyword,pageable);
     }
 }

@@ -8,10 +8,11 @@
 <body>
 <a href="/create-user">Create New User</a>
 <h1>User</h1>
-<form th:action="@{/users}" method="post">
-    <input type="text" name="userName" th:value="${userName}" placeholder="Enter user name">
+<form>
+    <input type="text" name="s" th:value="${keyword}" placeholder="Enter user name">
     <input type="submit" value="search">
 </form>
+There are [[${users.totalElements}]] users(s).
 <table border="1" class="table">
     <tr>
         <th>User Name</th>
@@ -33,10 +34,10 @@
         </tr>
     </th:block>
 </table>
-<div th:align="right">
-    <a th:href="@{'/users'(page=${users.number - 1})}" th:if="${users.hasPrevious()}">Previous</a>
+<div th:align="left">
+    <a th:href="@{'/users'(page=${users.number - 1},size=${users.size},s=${keyword})}" th:if="${users.hasPrevious()}">Previous</a>
     <span th:text="${users.number + 1}"></span>/<span th:text="${users.totalPages}"></span>
-    <a th:href="@{'/users'(page=${users.number + 1})}" th:if="${users.hasNext()}">Next</a>
+    <a th:href="@{'/users'(page=${users.number + 1},size=${users.size},s=${keyword})}" th:if="${users.hasNext()}">Next</a>
 </div>
 </body>
 </html>
